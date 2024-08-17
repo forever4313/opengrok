@@ -68,7 +68,7 @@ if [[ "$GITHUB_EVENT_NAME" == "pull_request" ]]; then
 fi
 
 # The push only works on the main repository.
-if [[ "$OPENGROK_REPO_SLUG" != "oracle/opengrok" ]]; then
+if [[ "$OPENGROK_REPO_SLUG" != "registry.cn-hangzhou.aliyuncs.com/opengrok/docker" ]]; then
 	echo "Not pushing Docker image for non main repository"
 	exit 0
 fi
