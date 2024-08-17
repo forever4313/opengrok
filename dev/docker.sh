@@ -16,7 +16,7 @@ echo "Running linter"
 docker run --rm -i hadolint/hadolint:2.6.0 < Dockerfile || exit 1
 
 API_URL="https://hub.docker.com/v2"
-IMAGE="opengrok/docker"
+IMAGE="registry.cn-hangzhou.aliyuncs.com/opengrok/docker"
 
 if [[ -n $OPENGROK_REF && $OPENGROK_REF == refs/tags/* ]]; then
 	OPENGROK_TAG=${OPENGROK_REF#"refs/tags/"}
