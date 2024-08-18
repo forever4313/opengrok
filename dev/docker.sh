@@ -43,7 +43,9 @@ echo "Short version: $VERSION_SHORT"
 # Build the image.
 echo "Building docker image"
 docker build \
-    -t $IMAGE:$VERSION .
+    -t $IMAGE:$VERSION \
+    -t $IMAGE:$VERSION_SHORT \
+    -t $IMAGE:latest .
 
 #
 # Run the image in container. This is not strictly needed however
@@ -74,9 +76,11 @@ fi
 # Publish the image to Docker hub.
 if [ -n "$DOCKER_PASSWORD" -a -n "$DOCKER_USERNAME" -a -n "$VERSION" ]; then
 	echo "Logging into Docker Hub"
-	echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+	echo "$DOCKER_PASSWORD" | docker login --username "$DOCKER_USERNAME" registry.cn-hangzhou.aliyuncs.com --password-stdin
 
 	# All the tags need to be pushed individually:
-	echo "Pushing Docker image for tag $VERSION"
-	docker push $IMAGE:$VERSION
+	for tag in $VERSION $VERSION_SHORT latest; do
+		echo "Pushing Docker image for tag $tag"
+		docker push $IMAGE:$tag
+	done
 fi
