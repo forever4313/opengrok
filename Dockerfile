@@ -37,7 +37,7 @@ LABEL maintainer="https://github.com/oracle/opengrok"
 
 # install dependencies and Python tools
 RUN apt-get update && \
-    apt-get install -y git subversion mercurial unzip inotify-tools python3 python3-pip python3-venv
+    apt-get install -y git subversion mercurial unzip inotify-tools python3 python3-pip python3-venv python3-setuptools
 
 # compile and install universal-ctags
 RUN apt-get install -y pkg-config autoconf build-essential && \
@@ -52,8 +52,8 @@ COPY --from=build opengrok.tar.gz /opengrok.tar.gz
 RUN mkdir -p /opengrok /opengrok/etc /opengrok/data /opengrok/src && \
     tar -zxvf /opengrok.tar.gz -C /opengrok --strip-components 1 && \
     rm -f /opengrok.tar.gz
-
-RUN python3 -m pip install /opengrok/tools/opengrok-tools*
+    python3 -m pip install --no-cache-dir /opengrok/tools/opengrok-tools* && \
+    python3 -m pip install --no-cache-dir Flask Flask-HTTPAuth waitress # for /reindex REST endpoint handled by start.py
 
 # environment variables
 ENV SRC_ROOT /opengrok/src
