@@ -52,8 +52,8 @@ COPY --from=build opengrok.tar.gz /opengrok.tar.gz
 RUN mkdir -p /opengrok /opengrok/etc /opengrok/data /opengrok/src && \
     tar -zxvf /opengrok.tar.gz -C /opengrok --strip-components 1 && \
     rm -f /opengrok.tar.gz && \
-    python3 -m pip install --no-cache-dir /opengrok/tools/opengrok-tools* && \
-    python3 -m pip install --no-cache-dir Flask Flask-HTTPAuth waitress # for /reindex REST endpoint handled by start.py
+    python3 -m pip install --no-cache-dir /opengrok/tools/opengrok-tools*  --break-system-packages && \
+    python3 -m pip install --no-cache-dir Flask Flask-HTTPAuth waitress  --break-system-packages # for /reindex REST endpoint handled by start.py
 
 # environment variables
 ENV SRC_ROOT /opengrok/src
