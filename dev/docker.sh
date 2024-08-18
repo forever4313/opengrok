@@ -43,9 +43,7 @@ echo "Short version: $VERSION_SHORT"
 # Build the image.
 echo "Building docker image"
 docker build \
-    -t $IMAGE:$VERSION \
-    -t $IMAGE:$VERSION_SHORT \
-    -t $IMAGE:latest .
+    -t $IMAGE:$VERSION 
 
 #
 # Run the image in container. This is not strictly needed however
@@ -55,11 +53,7 @@ echo "Running the image in container"
 docker run -d $IMAGE
 docker ps -a
 
-# The push only works on the main repository.
-if [[ "$OPENGROK_REPO_SLUG" != "registry.cn-hangzhou.aliyuncs.com/opengrok/docker" ]]; then
-	echo "Not pushing Docker image for non main repository"
-	exit 0
-fi
+
 
 # Allow Docker push for release builds only.
 if [[ -z $OPENGROK_TAG ]]; then
@@ -83,8 +77,6 @@ if [ -n "$DOCKER_PASSWORD" -a -n "$DOCKER_USERNAME" -a -n "$VERSION" ]; then
 	echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 
 	# All the tags need to be pushed individually:
-	for tag in $VERSION $VERSION_SHORT latest; do
-		echo "Pushing Docker image for tag $tag"
-		docker push $IMAGE:$tag
-	done
+	echo "Pushing Docker image for tag $VERSION"
+	docker push $IMAGE:$VERSION
 fi
