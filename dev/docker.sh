@@ -43,7 +43,7 @@ echo "Short version: $VERSION_SHORT"
 # Build the image.
 echo "Building docker image"
 docker build \
-    -t $IMAGE:$VERSION 
+    -t $IMAGE:$VERSION .
 
 #
 # Run the image in container. This is not strictly needed however
